@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<title>Canvas GO</title>
-</head>
-<body>
-	<canvas width="300px" height="300px" id="area_dibujo"></canvas>
-	<p>Dibuja con el mouse</p>
-	<script src="js/canvas3.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas GO</title>
+    <style>
+      canvas {
+        border: 2px solid lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="300px" height="300px" id="area_de_dibujo"></canvas>
+    <p>Dibuja con el mouse</p>
+    <input type="color" id="color" />
+    <input type="button" id="clear" value="limpiar lienzo" />
+
+    <script src="js/canvas3.js"></script>
+  </body>
 </html>

@@ -1,48 +1,40 @@
-var estado = 0;          // estado del click      
-var colorLinea = "blue";    // color a la linea
+const cuadrito = document.getElementById("area_de_dibujo");
+const color = document.getElementById("color");
+const clear = document.getElementById("clear");
+const lienzo = cuadrito.getContext("2d");
 
-var area = document.getElementById('area_dibujo');
-var papel = area.getContext("2d");
-var x;                      // guardar coordenada en X
-var y;                      // guardar coordenada en Y
-document.addEventListener("mousedown",presionarMouse);  //cuando presionas click
-document.addEventListener("mouseup",soltarMouse);       //cuando sueltas click
-document.addEventListener("mousemove",dibujarMouse);    //cuando mueves el mouse
+let colorcito = "#000";
 
-// dibujo del borde
-dibujarLinea("red", 0, 0, 300, 0, papel)
-dibujarLinea("red", 300, 0, 300, 300, papel)
-dibujarLinea("red", 300, 300, 0, 300, papel)
-dibujarLinea("red", 0, 300, 0, 0, papel)
+let isPressed = false;
 
-// Funcion para mousemove
-function dibujarMouse(evento){
-if (estado == 1) {   // solo se dibujara si esta el click del mouse presionado
-	dibujarLinea(colorLinea, x, y, evento.layerX, evento.layerY, papel);
-}
-x = evento.layerX;
-y = evento.layerY;
-}
+document.addEventListener("mousemove", (e) => {
+  if (!isPressed) return;
 
-// Funcion para mousedown
-function presionarMouse(evento){
-estado = 1;         //click presionado  
-x = evento.layerX;
-y = evento.layerY;
+  dibujar(colorcito, e.layerX - 1, e.layerY - 1, e.layerX + 1, e.layerY + 1);
+});
+
+document.addEventListener("mousedown", () => {
+  isPressed = true;
+});
+
+document.addEventListener("mouseup", () => {
+  isPressed = false;
+});
+
+function dibujar(color, xinicial, yinicial, xfinal, yfinal) {
+  lienzo.beginPath();
+  lienzo.strokeStyle = color;
+  lienzo.lineWidth = 3;
+  lienzo.moveTo(xinicial, yinicial);
+  lienzo.lineTo(xfinal, yfinal);
+  lienzo.stroke();
+  lienzo.closePath();
 }
 
-// Funcion para mouseup
-function soltarMouse(evento){
-estado = 0;         // click suelto
-x = evento.layerX;
-y = evento.layerY;
-}
-function dibujarLinea(color, xinicial, yinicial, xfinal, yfinal, lienzo){
-lienzo.beginPath();                  // Inicia el trazo
-lienzo.strokeStyle = color;          // Estilo de trazo (color)
-lienzo.lineWidth = 2;                // Ancho de la linea
-lienzo.moveTo(xinicial, yinicial);   // Donde comienza la linea
-lienzo.lineTo(xfinal, yfinal);       // Traza la linea (ubica punto final)
-lienzo.stroke();                     // Dibuja con el estio de trazo
-lienzo.closePath();                  // Cierra el dibujo
-}
+color.addEventListener("change", () => {
+  colorcito = color.value;
+});
+
+clear.addEventListener("click", () => {
+  lienzo.clearRect(0, 0, cuadrito.width, cuadrito.height);
+});
